@@ -1,0 +1,49 @@
+# ML A/B Platform Configuration
+
+models:
+  artifacts_dir: "artifacts"
+  model_a_path: "artifacts/model_a.joblib"
+  model_b_path: "artifacts/model_b.joblib"
+  baseline_metrics_path: "artifacts/baseline_metrics.json"
+
+data:
+  dataset_path: "data/adult.csv"
+  target_column: "income"
+  test_size: 0.2
+  random_state: 42
+
+api:
+  host: "127.0.0.1"
+  port: 8000
+  log_level: "info"
+
+database:
+  path: "artifacts/platform.db"
+
+routing:
+  default_split: 0.5
+  canary_initial_split: 0.05
+  canary_promotion_threshold: 0.95
+  canary_min_samples: 200
+  canary_degradation_threshold: 0.05
+
+statistics:
+  alpha: 0.05
+  power: 0.8
+  minimum_effect_size: 0.02
+  minimum_sample_size: 200
+  obrien_fleming_peeks: 5
+
+bandit:
+  prior_alpha: 1.0
+  prior_beta: 1.0
+
+dashboard:
+  refresh_seconds: 5
+  port: 8501
+
+simulation:
+  default_requests: 2000
+  default_delay_ms: 5
+  feedback_delay_ms: 50
+  noise: 0.05

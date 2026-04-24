@@ -1,0 +1,44 @@
+# VCS / IDE
+.git
+.gitignore
+.github
+.idea
+.vscode
+.claude
+
+# Python build / cache
+__pycache__
+*.py[cod]
+*.egg-info
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+build
+dist
+
+# Virtualenvs
+.venv
+venv
+env
+
+# Local data the container mounts as a volume
+artifacts
+data
+logs
+*.log
+*.db
+
+# Tests are not needed in the runtime image
+tests
+
+# Editor / OS
+*.swp
+*.swo
+.DS_Store
+
+# Docs / Docker meta (keep the image context minimal)
+Dockerfile
+docker-compose.yml
+.dockerignore

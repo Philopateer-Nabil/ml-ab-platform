@@ -1,0 +1,73 @@
+# Two services share the same image and the same /data volume so the
+# dashboard sees the API's SQLite DB and trained models.
+#
+#   docker compose up --build          # start API + dashboard
+#   docker compose run --rm train      # one-off model training
+#   docker compose run --rm simulate   # run a traffic simulation
+#
+# First run: `docker compose run --rm train` once to populate /data/artifacts,
+# then `docker compose up`.
+
+services:
+  api:
+    build: .
+    image: ml-ab-platform:latest
+    container_name: mlab-api
+    command: ["serve"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - mlab-data:/data
+    environment:
+      MLAB_API__HOST: "0.0.0.0"
+      MLAB_API__PORT: "8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  dashboard:
+    image: ml-ab-platform:latest
+    container_name: mlab-dashboard
+    # Streamlit must bind to 0.0.0.0 inside the container to be reachable.
+    command: ["dashboard"]
+    environment:
+      MLAB_DASHBOARD__PORT: "8501"
+      STREAMLIT_SERVER_ADDRESS: "0.0.0.0"
+      STREAMLIT_SERVER_HEADLESS: "true"
+    ports:
+      - "8501:8501"
+    volumes:
+      - mlab-data:/data
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # One-off job: train baseline models into the shared volume. Uses `--rm`
+  # in the README invocation so the container is cleaned up after exit.
+  train:
+    image: ml-ab-platform:latest
+    build: .
+    command: ["train"]
+    volumes:
+      - mlab-data:/data
+    profiles: ["tools"]
+
+  # One-off job: run a synthetic traffic scenario against the api service.
+  simulate:
+    image: ml-ab-platform:latest
+    build: .
+    command: ["simulate", "--scenario", "clear-winner", "--requests", "2000",
+              "--api-url", "http://api:8000"]
+    volumes:
+      - mlab-data:/data
+    depends_on:
+      - api
+    profiles: ["tools"]
+
+volumes:
+  mlab-data:
+    driver: local
