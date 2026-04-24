@@ -1,5 +1,10 @@
 # ML A/B Testing Platform
 
+[![CI](https://github.com/Philopateer-Nabil/ml-ab-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Philopateer-Nabil/ml-ab-platform/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)](https://www.python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+
 A production-quality experimentation platform for ML models — written in Python,
 runs entirely locally, zero paid services. Trains two classifiers on the UCI
 Adult income dataset, then demonstrates how to route, measure, and *statistically*
