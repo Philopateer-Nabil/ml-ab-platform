@@ -337,8 +337,3 @@ All tests use deterministic seeds — runs are reproducible.
 
 MIT.
 
-## Author
-
-Built by [**Philopateer Nabil**](https://github.com/Philopateer-Nabil) as a portfolio
-project exploring the statistical and systems side of production ML
-experimentation. Feedback, issues, and PRs are welcome.
